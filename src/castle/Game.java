@@ -8,13 +8,13 @@ class Userstate {
 	public HashMap<String, UserCmd> ucmds;
 }
 
-interface UserCmd {
-	public void DoUserCmd(String[] words, Userstate us);
+class UserCmd {
+	public void DoUserCmd(String[] words, Userstate us){};
 
-	public boolean IsBye();
+	public boolean IsBye(){return false;};
 }
 
-class GetHelp implements UserCmd {
+class GetHelp extends UserCmd {
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
 		System.out.print("迷路了吗？你可以做的命令有：");
@@ -29,7 +29,7 @@ class GetHelp implements UserCmd {
 	}
 }
 
-class LookAround implements UserCmd {
+class LookAround extends UserCmd {
 
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
@@ -41,7 +41,7 @@ class LookAround implements UserCmd {
 	}
 }
 
-class GoRoom implements UserCmd {
+class GoRoom extends UserCmd {
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
 		try {
@@ -63,7 +63,7 @@ class GoRoom implements UserCmd {
 	}
 }
 
-class Bye implements UserCmd {
+class Bye extends UserCmd {
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
 		System.out.println("感谢您的光临。再见！");		
