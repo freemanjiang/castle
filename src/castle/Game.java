@@ -9,20 +9,19 @@ class Userstate {
 }
 
 interface UserCmd {
-	public boolean DoUserCmd(String[] words, Userstate us);
+	public void DoUserCmd(String[] words, Userstate us);
 
 	public boolean IsBye();
 }
 
 class GetHelp implements UserCmd {
 	@Override
-	public boolean DoUserCmd(String[] words, Userstate us) {
+	public void DoUserCmd(String[] words, Userstate us) {
 		System.out.print("迷路了吗？你可以做的命令有：");
 		for (String cmd : us.ucmds.keySet()) {
 			System.out.print(cmd + " ");
 		}
-		System.out.println("如：\tgo east");
-		return true;
+		System.out.println("如：\tgo east");		
 	}
 	@Override
 	public boolean IsBye() {
@@ -33,9 +32,8 @@ class GetHelp implements UserCmd {
 class LookAround implements UserCmd {
 
 	@Override
-	public boolean DoUserCmd(String[] words, Userstate us) {
-		System.out.println("观察了一下周围");
-		return true;
+	public void DoUserCmd(String[] words, Userstate us) {
+		System.out.println("观察了一下周围");		
 	}
 	@Override
 	public boolean IsBye() {
@@ -45,7 +43,7 @@ class LookAround implements UserCmd {
 
 class GoRoom implements UserCmd {
 	@Override
-	public boolean DoUserCmd(String[] words, Userstate us) {
+	public void DoUserCmd(String[] words, Userstate us) {
 		try {
 			String direction = words[1];
 
@@ -55,10 +53,8 @@ class GoRoom implements UserCmd {
 			} else {
 				System.out.println("那里没有门！");
 			}
-			return true;
 		} catch (Exception e) {
-			System.out.println("GoRom命令错误");
-			return false;
+			System.out.println("GoRom命令错误");			
 		}
 	}
 	@Override
@@ -69,9 +65,8 @@ class GoRoom implements UserCmd {
 
 class Bye implements UserCmd {
 	@Override
-	public boolean DoUserCmd(String[] words, Userstate us) {
-		System.out.println("感谢您的光临。再见！");
-		return true;
+	public void DoUserCmd(String[] words, Userstate us) {
+		System.out.println("感谢您的光临。再见！");		
 	}
 	@Override
 	public boolean IsBye() {
