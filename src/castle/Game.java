@@ -11,7 +11,8 @@ class Userstate {
 
 class UserCmd {
 	protected Game game;
-	public UserCmd(Game game) {		
+
+	public UserCmd(Game game) {
 		this.game = game;
 	}
 
@@ -75,12 +76,9 @@ class GoRoom extends UserCmd {
 			Room ret = null;
 			if (direction.equals("randdoor")) {
 				ret = us.currentRoom.GetNextRoomByRandom();
-			} 
-			else if(direction.equals("randroom"))
-			{
+			} else if (direction.equals("randroom")) {
 				ret = game.GetRoomByRandom();
-			}
-			else {
+			} else {
 				ret = us.currentRoom.GetNextRoomByDirection(direction);
 			}
 			if (ret != null) {
