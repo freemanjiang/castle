@@ -10,6 +10,7 @@ class Userstate {
 
 interface UserCmd {
 	public boolean DoUserCmd(String[] words, Userstate us);
+
 	public boolean IsBye();
 }
 
@@ -23,7 +24,10 @@ class GetHelp implements UserCmd {
 		System.out.println("如：\tgo east");
 		return true;
 	}
-	public boolean IsBye(){return false;}	
+
+	public boolean IsBye() {
+		return false;
+	}
 }
 
 class LookAround implements UserCmd {
@@ -33,7 +37,10 @@ class LookAround implements UserCmd {
 		System.out.println("观察了一下周围");
 		return true;
 	}
-	public boolean IsBye(){return false;}
+
+	public boolean IsBye() {
+		return false;
+	}
 }
 
 class GoRoom implements UserCmd {
@@ -45,8 +52,7 @@ class GoRoom implements UserCmd {
 			Room ret = us.currentRoom.GetNextRoomByDirection(direction);
 			if (ret != null) {
 				us.currentRoom = ret;
-			}
-			else {
+			} else {
 				System.out.println("那里没有门！");
 			}
 			return true;
@@ -55,7 +61,10 @@ class GoRoom implements UserCmd {
 			return false;
 		}
 	}
-	public boolean IsBye(){return false;}
+
+	public boolean IsBye() {
+		return false;
+	}
 }
 
 class Bye implements UserCmd {
@@ -64,7 +73,10 @@ class Bye implements UserCmd {
 		System.out.println("感谢您的光临。再见！");
 		return true;
 	}
-	public boolean IsBye(){return true;}
+
+	public boolean IsBye() {
+		return true;
+	}
 }
 
 public class Game {
@@ -118,6 +130,23 @@ public class Game {
 		System.out.println();
 	}
 
+	private void Play() {
+		Scanner in = new Scanner(System.in);
+		while (true) {
+			String line = in.nextLine();
+			String[] words = line.split(" ");
+			UserCmd uc = ucmds.get(words[0]);
+			if (uc != null) {
+				uc.DoUserCmd(words, us);
+				if (uc.IsBye()) {
+					break;
+				}
+				showState();
+			}
+		}
+		in.close();
+	}
+
 	private void printWelcome() {
 		System.out.println();
 		System.out.println("欢迎来到城堡！");
@@ -127,25 +156,9 @@ public class Game {
 	}
 
 	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
 		Game game = new Game();
 		game.printWelcome();
 		game.showState();
-
-		while (true) {
-			String line = in.nextLine();
-			String[] words = line.split(" ");
-			UserCmd uc=game.ucmds.get(words[0]);
-			if(uc!=null)
-			{
-				uc.DoUserCmd(words, us);
-				if(uc.IsBye())
-				{
-					break;
-				}				
-				game.showState();
-			}			
-		}
-		in.close();
+		game.Play();
 	}
 }
