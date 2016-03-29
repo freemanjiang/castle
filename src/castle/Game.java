@@ -1,5 +1,6 @@
 package castle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -9,6 +10,11 @@ class Userstate {
 }
 
 class UserCmd {
+	protected Game game;
+	public UserCmd(Game game) {		
+		this.game = game;
+	}
+
 	public void DoUserCmd(String[] words, Userstate us) {
 	};
 
@@ -18,6 +24,11 @@ class UserCmd {
 }
 
 class GetHelp extends UserCmd {
+	public GetHelp(Game game) {
+		super(game);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
 		System.out.print("迷路了吗？你可以做的命令有：");
@@ -35,6 +46,11 @@ class GetHelp extends UserCmd {
 
 class LookAround extends UserCmd {
 
+	public LookAround(Game game) {
+		super(game);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
 		System.out.println("观察了一下周围");
@@ -47,6 +63,11 @@ class LookAround extends UserCmd {
 }
 
 class GoRoom extends UserCmd {
+	public GoRoom(Game game) {
+		super(game);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
 		try {
@@ -54,7 +75,12 @@ class GoRoom extends UserCmd {
 			Room ret = null;
 			if (direction.equals("randdoor")) {
 				ret = us.currentRoom.GetNextRoomByRandom();
-			} else {
+			} 
+			else if(direction.equals("randroom"))
+			{
+				ret = game.GetRoomByRandom();
+			}
+			else {
 				ret = us.currentRoom.GetNextRoomByDirection(direction);
 			}
 			if (ret != null) {
@@ -74,6 +100,11 @@ class GoRoom extends UserCmd {
 }
 
 class Bye extends UserCmd {
+	public Bye(Game game) {
+		super(game);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
 		System.out.println("感谢您的光临。再见！");
@@ -88,7 +119,8 @@ class Bye extends UserCmd {
 public class Game {
 	private Userstate us = new Userstate();
 	// private Room currentRoom;
-	private HashMap<String, UserCmd> ucmds = new HashMap<String, UserCmd>();
+	public HashMap<String, UserCmd> ucmds = new HashMap<String, UserCmd>();
+	private ArrayList<Room> rooms = new ArrayList<Room>();
 
 	public Game() {
 		Room startingPoint = createRooms();
@@ -102,10 +134,10 @@ public class Game {
 	}
 
 	private void createUserCmds() {
-		ucmds.put("help", new GetHelp());
-		ucmds.put("go", new GoRoom());
-		ucmds.put("bye", new Bye());
-		ucmds.put("look", new LookAround());
+		ucmds.put("help", new GetHelp(this));
+		ucmds.put("go", new GoRoom(this));
+		ucmds.put("bye", new Bye(this));
+		ucmds.put("look", new LookAround(this));
 	}
 
 	private Room createRooms() {
@@ -118,6 +150,13 @@ public class Game {
 		study = new Room("书房");
 		bedroom = new Room("卧室");
 		playground = new Room("游乐场");
+
+		rooms.add(outside);
+		rooms.add(lobby);
+		rooms.add(pub);
+		rooms.add(study);
+		rooms.add(bedroom);
+		rooms.add(playground);
 
 		// 初始化房间的出口
 		outside.addExit("east", lobby);
@@ -132,6 +171,11 @@ public class Game {
 		playground.addExit("southwest", outside);
 
 		return outside;// 从城堡门外开始
+	}
+
+	public Room GetRoomByRandom() {
+		int idx = (int) (Math.random() * rooms.size());
+		return rooms.get(idx);
 	}
 
 	private void showState() {
