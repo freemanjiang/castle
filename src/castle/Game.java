@@ -9,9 +9,12 @@ class Userstate {
 }
 
 class UserCmd {
-	public void DoUserCmd(String[] words, Userstate us){};
+	public void DoUserCmd(String[] words, Userstate us) {
+	};
 
-	public boolean IsBye(){return false;};
+	public boolean IsBye() {
+		return false;
+	};
 }
 
 class GetHelp extends UserCmd {
@@ -21,8 +24,9 @@ class GetHelp extends UserCmd {
 		for (String cmd : us.ucmds.keySet()) {
 			System.out.print(cmd + " ");
 		}
-		System.out.println("如：\tgo east");		
+		System.out.println("如：\tgo east");
 	}
+
 	@Override
 	public boolean IsBye() {
 		return false;
@@ -33,8 +37,9 @@ class LookAround extends UserCmd {
 
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
-		System.out.println("观察了一下周围");		
+		System.out.println("观察了一下周围");
 	}
+
 	@Override
 	public boolean IsBye() {
 		return false;
@@ -46,17 +51,22 @@ class GoRoom extends UserCmd {
 	public void DoUserCmd(String[] words, Userstate us) {
 		try {
 			String direction = words[1];
-
-			Room ret = us.currentRoom.GetNextRoomByDirection(direction);
+			Room ret = null;
+			if (direction.equals("randdoor")) {
+				ret = us.currentRoom.GetNextRoomByRandom();
+			} else {
+				ret = us.currentRoom.GetNextRoomByDirection(direction);
+			}
 			if (ret != null) {
 				us.currentRoom = ret;
 			} else {
 				System.out.println("那里没有门！");
 			}
 		} catch (Exception e) {
-			System.out.println("GoRom命令错误");			
+			System.out.println("GoRom命令错误");
 		}
 	}
+
 	@Override
 	public boolean IsBye() {
 		return false;
@@ -66,8 +76,9 @@ class GoRoom extends UserCmd {
 class Bye extends UserCmd {
 	@Override
 	public void DoUserCmd(String[] words, Userstate us) {
-		System.out.println("感谢您的光临。再见！");		
+		System.out.println("感谢您的光临。再见！");
 	}
+
 	@Override
 	public boolean IsBye() {
 		return true;
@@ -86,7 +97,7 @@ public class Game {
 	}
 
 	private void InitializeUserstate(Room startingPoing) {
-		us.currentRoom = startingPoing; 
+		us.currentRoom = startingPoing;
 		us.ucmds = ucmds;
 	}
 
@@ -119,7 +130,7 @@ public class Game {
 		study.addExit("east", bedroom);
 		bedroom.addExit("west", study);
 		playground.addExit("southwest", outside);
-		
+
 		return outside;// 从城堡门外开始
 	}
 
