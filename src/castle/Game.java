@@ -75,13 +75,19 @@ class Bye extends UserCmd {
 }
 
 public class Game {
-	private static Userstate us = new Userstate();
+	private Userstate us = new Userstate();
 	// private Room currentRoom;
 	private HashMap<String, UserCmd> ucmds = new HashMap<String, UserCmd>();
 
 	public Game() {
-		createRooms();
+		Room startingPoint = createRooms();
 		createUserCmds();
+		InitializeUserstate(startingPoint);
+	}
+
+	private void InitializeUserstate(Room startingPoing) {
+		us.currentRoom = startingPoing; 
+		us.ucmds = ucmds;
 	}
 
 	private void createUserCmds() {
@@ -91,7 +97,7 @@ public class Game {
 		ucmds.put("look", new LookAround());
 	}
 
-	private void createRooms() {
+	private Room createRooms() {
 		Room outside, lobby, pub, study, bedroom, playground;
 
 		// 制造房间
@@ -113,9 +119,8 @@ public class Game {
 		study.addExit("east", bedroom);
 		bedroom.addExit("west", study);
 		playground.addExit("southwest", outside);
-
-		us.currentRoom = outside; // 从城堡门外开始
-		us.ucmds = ucmds;
+		
+		return outside;// 从城堡门外开始
 	}
 
 	private void showState() {
