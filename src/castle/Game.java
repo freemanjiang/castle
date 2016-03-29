@@ -24,7 +24,7 @@ class GetHelp implements UserCmd {
 		System.out.println("如：\tgo east");
 		return true;
 	}
-
+	@Override
 	public boolean IsBye() {
 		return false;
 	}
@@ -37,7 +37,7 @@ class LookAround implements UserCmd {
 		System.out.println("观察了一下周围");
 		return true;
 	}
-
+	@Override
 	public boolean IsBye() {
 		return false;
 	}
@@ -61,7 +61,7 @@ class GoRoom implements UserCmd {
 			return false;
 		}
 	}
-
+	@Override
 	public boolean IsBye() {
 		return false;
 	}
@@ -73,7 +73,7 @@ class Bye implements UserCmd {
 		System.out.println("感谢您的光临。再见！");
 		return true;
 	}
-
+	@Override
 	public boolean IsBye() {
 		return true;
 	}
