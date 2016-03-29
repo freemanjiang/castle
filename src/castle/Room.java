@@ -3,7 +3,7 @@ package castle;
 import java.util.HashMap;
 
 public class Room {
-    public String description;
+    private String description;
 
     public HashMap<String, Room> exits = new  HashMap<String, Room>();    
     
