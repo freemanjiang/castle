@@ -10,6 +10,7 @@ class Userstate {
 
 interface UserCmd {
 	public boolean DoUserCmd(String[] words, Userstate us);
+	public boolean IsBye();
 }
 
 class GetHelp implements UserCmd {
@@ -22,6 +23,7 @@ class GetHelp implements UserCmd {
 		System.out.println("如：\tgo east");
 		return true;
 	}
+	public boolean IsBye(){return false;}	
 }
 
 class LookAround implements UserCmd {
@@ -31,7 +33,7 @@ class LookAround implements UserCmd {
 		System.out.println("观察了一下周围");
 		return true;
 	}
-
+	public boolean IsBye(){return false;}
 }
 
 class GoRoom implements UserCmd {
@@ -53,6 +55,7 @@ class GoRoom implements UserCmd {
 			return false;
 		}
 	}
+	public boolean IsBye(){return false;}
 }
 
 class Bye implements UserCmd {
@@ -61,6 +64,7 @@ class Bye implements UserCmd {
 		System.out.println("感谢您的光临。再见！");
 		return true;
 	}
+	public boolean IsBye(){return true;}
 }
 
 public class Game {
@@ -131,19 +135,16 @@ public class Game {
 		while (true) {
 			String line = in.nextLine();
 			String[] words = line.split(" ");
-			for (String cmd : game.ucmds.keySet()) {
-				if (words[0].equals(cmd)) {
-					UserCmd uc = game.ucmds.get(cmd);
-					if (uc.DoUserCmd(words, us) == false) {
-						System.out.println("命令错误");
-						break;
-					}
-					game.showState();
-				}
-			}
-			if (words[0].equals("bye")) {
-				break;
-			}
+			UserCmd uc=game.ucmds.get(words[0]);
+			if(uc!=null)
+			{
+				uc.DoUserCmd(words, us);
+				if(uc.IsBye())
+				{
+					break;
+				}				
+				game.showState();
+			}			
 		}
 		in.close();
 	}
