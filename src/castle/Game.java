@@ -39,18 +39,14 @@ class GoRoom implements UserCmd {
 	public boolean DoUserCmd(String[] words, Userstate us) {
 		try {
 			String direction = words[1];
-			if(us.currentRoom.CanIGoThisDiection(direction))
-			{
-				Room ret =  us.currentRoom.GetNextRoomByDirection(direction);
-				if(ret!=null)
-				{
-					us.currentRoom = ret;
-				}				
+
+			Room ret = us.currentRoom.GetNextRoomByDirection(direction);
+			if (ret != null) {
+				us.currentRoom = ret;
 			}
-			else
-			{
-				System.out.println("那里没有门！");	
-			}			
+			else {
+				System.out.println("那里没有门！");
+			}
 			return true;
 		} catch (Exception e) {
 			System.out.println("GoRom命令错误");
@@ -113,7 +109,7 @@ public class Game {
 
 	private void showState() {
 		System.out.println("现在你在" + us.currentRoom);
-		System.out.print("出口有：");		
+		System.out.print("出口有：");
 		us.currentRoom.ShowExits();
 		System.out.println();
 	}

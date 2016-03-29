@@ -20,16 +20,6 @@ public class Room {
 			System.out.print(exit + " ");
 		}
 	}
-
-	public boolean CanIGoThisDiection(String direction)
-	{
-		for (String exit : exits.keySet()) {
-			if (exit.equals(direction)) {
-				return true;
-			}
-		}
-		return true;
-	}
 	
 	public Room GetNextRoomByDirection(String dirction)
 	{
