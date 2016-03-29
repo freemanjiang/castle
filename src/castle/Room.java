@@ -20,18 +20,11 @@ public class Room {
 			System.out.print(exit + " ");
 		}
 	}
-	
-	public Room GetNextRoomByDirection(String dirction)
-	{
-		try{
-			return exits.get(dirction);
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
+
+	public Room GetNextRoomByDirection(String dirction) {
+		return exits.get(dirction);
 	}
-	
+
 	@Override
 	public String toString() {
 		return description;
