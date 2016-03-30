@@ -9,7 +9,7 @@ public class UserCmd {
 		this.roommanager = roommanager;
 	}
 
-	public void DoUserCmd(String[] words, Userstate us) {
+	public void DoUserCmd(String[] words, PlayerState us) {
 	};
 
 	public boolean IsBye() {
@@ -23,12 +23,12 @@ class GetHelp extends UserCmd {
 	}
 
 	@Override
-	public void DoUserCmd(String[] words, Userstate us) {
-		System.out.print("ÃÔÂ·ÁËÂğ£¿Äã¿ÉÒÔ×öµÄÃüÁîÓĞ£º");
+	public void DoUserCmd(String[] words, PlayerState us) {
+		System.out.print("è¿·è·¯äº†å—ï¼Ÿä½ å¯ä»¥åšçš„å‘½ä»¤æœ‰ï¼š");
 		for (String cmd : us.ucmds.keySet()) {
 			System.out.print(cmd + " ");
 		}
-		System.out.println("Èç£º\tgo east");
+		System.out.println("å¦‚ï¼š\tgo east");
 	}
 
 	@Override
@@ -44,8 +44,8 @@ class LookAround extends UserCmd {
 	}
 
 	@Override
-	public void DoUserCmd(String[] words, Userstate us) {
-		System.out.println("¹Û²ìÁËÒ»ÏÂÖÜÎ§");
+	public void DoUserCmd(String[] words, PlayerState us) {
+		System.out.println("è§‚å¯Ÿäº†ä¸€ä¸‹å‘¨å›´");
 	}
 
 	@Override
@@ -60,7 +60,7 @@ class GoRoom extends UserCmd {
 	}
 
 	@Override
-	public void DoUserCmd(String[] words, Userstate us) {
+	public void DoUserCmd(String[] words, PlayerState us) {
 		try {
 			String direction = words[1];
 			Room ret = null;
@@ -75,10 +75,10 @@ class GoRoom extends UserCmd {
 			if (ret != null) {
 				us.currentRoom = ret;
 			} else {
-				System.out.println("ÄÇÀïÃ»ÓĞÃÅ£¡");
+				System.out.println("é‚£é‡Œæ²¡æœ‰é—¨ï¼");
 			}
 		} catch (Exception e) {
-			System.out.println("GoRomÃüÁî´íÎó");
+			System.out.println("GoRomå‘½ä»¤é”™è¯¯");
 		}
 	}
 
@@ -94,8 +94,8 @@ class Bye extends UserCmd {
 	}
 
 	@Override
-	public void DoUserCmd(String[] words, Userstate us) {
-		System.out.println("¸ĞĞ»ÄúµÄ¹âÁÙ¡£ÔÙ¼û£¡");
+	public void DoUserCmd(String[] words, PlayerState us) {
+		System.out.println("æ„Ÿè°¢æ‚¨çš„å…‰ä¸´ã€‚å†è§ï¼");
 	}
 
 	@Override

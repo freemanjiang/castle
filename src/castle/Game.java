@@ -3,13 +3,13 @@ package castle;
 import java.util.HashMap;
 import java.util.Scanner;
 
-class Userstate {
+class PlayerState {
 	public Room currentRoom;
 	public HashMap<String, UserCmd> ucmds;
 }
 
 public class Game {
-	private Userstate us = new Userstate();
+	private PlayerState playerstate = new PlayerState();
 	private RoomManager roommanager = RoomManager.getInstance();
 	public HashMap<String, UserCmd> ucmds = new HashMap<String, UserCmd>();
 
@@ -20,8 +20,8 @@ public class Game {
 	}
 
 	private void InitializeUserstate(Room startingPoing) {
-		us.currentRoom = startingPoing;
-		us.ucmds = ucmds;
+		playerstate.currentRoom = startingPoing;
+		playerstate.ucmds = ucmds;
 	}
 
 	private void createUserCmds() {
@@ -65,9 +65,9 @@ public class Game {
 	}
 
 	private void showState() {
-		System.out.println("现在你在" + us.currentRoom);
+		System.out.println("现在你在" + playerstate.currentRoom);
 		System.out.print("出口有：");
-		us.currentRoom.ShowExits();
+		playerstate.currentRoom.ShowExits();
 		System.out.println();
 	}
 
@@ -78,7 +78,7 @@ public class Game {
 			String[] words = line.split(" ");
 			UserCmd uc = ucmds.get(words[0]);
 			if (uc != null) {
-				uc.DoUserCmd(words, us);
+				uc.DoUserCmd(words, playerstate);
 				if (uc.IsBye()) {
 					break;
 				}
