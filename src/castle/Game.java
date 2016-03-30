@@ -27,7 +27,7 @@ class UserCmd {
 class GetHelp extends UserCmd {
 	public GetHelp(Game game) {
 		super(game);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	@Override
@@ -49,7 +49,6 @@ class LookAround extends UserCmd {
 
 	public LookAround(Game game) {
 		super(game);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -66,7 +65,6 @@ class LookAround extends UserCmd {
 class GoRoom extends UserCmd {
 	public GoRoom(Game game) {
 		super(game);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -100,7 +98,6 @@ class GoRoom extends UserCmd {
 class Bye extends UserCmd {
 	public Bye(Game game) {
 		super(game);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

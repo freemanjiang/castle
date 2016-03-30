@@ -1,7 +1,6 @@
 package castle;
 
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class Room {
 	private String description;
