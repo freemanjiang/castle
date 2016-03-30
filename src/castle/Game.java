@@ -1,6 +1,5 @@
 package castle;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -9,113 +8,10 @@ class Userstate {
 	public HashMap<String, UserCmd> ucmds;
 }
 
-class UserCmd {
-	protected Game game;
-
-	public UserCmd(Game game) {
-		this.game = game;
-	}
-
-	public void DoUserCmd(String[] words, Userstate us) {
-	};
-
-	public boolean IsBye() {
-		return false;
-	};
-}
-
-class GetHelp extends UserCmd {
-	public GetHelp(Game game) {
-		super(game);
-
-	}
-
-	@Override
-	public void DoUserCmd(String[] words, Userstate us) {
-		System.out.print("迷路了吗？你可以做的命令有：");
-		for (String cmd : us.ucmds.keySet()) {
-			System.out.print(cmd + " ");
-		}
-		System.out.println("如：\tgo east");
-	}
-
-	@Override
-	public boolean IsBye() {
-		return false;
-	}
-}
-
-class LookAround extends UserCmd {
-
-	public LookAround(Game game) {
-		super(game);
-	}
-
-	@Override
-	public void DoUserCmd(String[] words, Userstate us) {
-		System.out.println("观察了一下周围");
-	}
-
-	@Override
-	public boolean IsBye() {
-		return false;
-	}
-}
-
-class GoRoom extends UserCmd {
-	public GoRoom(Game game) {
-		super(game);
-	}
-
-	@Override
-	public void DoUserCmd(String[] words, Userstate us) {
-		try {
-			String direction = words[1];
-			Room ret = null;
-			if (direction.equals("randdoor")) {
-				ret = us.currentRoom.GetNextRoomByRandom();
-			} else if (direction.equals("randroom")) {
-				ret = game.GetRoomByRandom();
-			} else {
-				ret = us.currentRoom.GetNextRoomByDirection(direction);
-			}
-			if (ret != null) {
-				us.currentRoom = ret;
-			} else {
-				System.out.println("那里没有门！");
-			}
-		} catch (Exception e) {
-			System.out.println("GoRom命令错误");
-		}
-	}
-
-	@Override
-	public boolean IsBye() {
-		return false;
-	}
-}
-
-class Bye extends UserCmd {
-	public Bye(Game game) {
-		super(game);
-	}
-
-	@Override
-	public void DoUserCmd(String[] words, Userstate us) {
-		System.out.println("感谢您的光临。再见！");
-	}
-
-	@Override
-	public boolean IsBye() {
-		return true;
-	}
-}
-
 public class Game {
 	private Userstate us = new Userstate();
-	// private Room currentRoom;
+	private RoomManager roommanager = RoomManager.getInstance();
 	public HashMap<String, UserCmd> ucmds = new HashMap<String, UserCmd>();
-	private ArrayList<Room> rooms = new ArrayList<Room>();
 
 	public Game() {
 		Room startingPoint = createRooms();
@@ -129,10 +25,10 @@ public class Game {
 	}
 
 	private void createUserCmds() {
-		ucmds.put("help", new GetHelp(this));
-		ucmds.put("go", new GoRoom(this));
-		ucmds.put("bye", new Bye(this));
-		ucmds.put("look", new LookAround(this));
+		ucmds.put("help", new GetHelp(roommanager));
+		ucmds.put("go", new GoRoom(roommanager));
+		ucmds.put("bye", new Bye(roommanager));
+		ucmds.put("look", new LookAround(roommanager));
 	}
 
 	private Room createRooms() {
@@ -146,13 +42,6 @@ public class Game {
 		bedroom = new Room("卧室");
 		playground = new Room("游乐场");
 
-		rooms.add(outside);
-		rooms.add(lobby);
-		rooms.add(pub);
-		rooms.add(study);
-		rooms.add(bedroom);
-		rooms.add(playground);
-
 		// 初始化房间的出口
 		outside.addExit("east", lobby);
 		outside.addExit("south", study);
@@ -165,12 +54,14 @@ public class Game {
 		bedroom.addExit("west", study);
 		playground.addExit("southwest", outside);
 
-		return outside;// 从城堡门外开始
-	}
+		roommanager.AddRoom(outside);
+		roommanager.AddRoom(lobby);
+		roommanager.AddRoom(pub);
+		roommanager.AddRoom(study);
+		roommanager.AddRoom(bedroom);
+		roommanager.AddRoom(playground);
 
-	public Room GetRoomByRandom() {
-		int idx = (int) (Math.random() * rooms.size());
-		return rooms.get(idx);
+		return outside;// 从城堡门外开始
 	}
 
 	private void showState() {
